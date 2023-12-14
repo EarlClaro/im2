@@ -20,6 +20,21 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL
 );
 
+-- Create the 'userprofile' table connected with 'users'
+CREATE TABLE IF NOT EXISTS userprofile (
+    profile_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNIQUE,
+    first_name VARCHAR(255),
+    middle_name VARCHAR(255),
+    last_name VARCHAR(255),
+    bio TEXT,
+    birthdate DATE,
+    gender VARCHAR(10), -- Assuming 'gender' is a string like 'Male', 'Female', etc.
+    location VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
 -- Create the 'notes' table
 CREATE TABLE IF NOT EXISTS notes (
     note_id INT AUTO_INCREMENT PRIMARY KEY,
