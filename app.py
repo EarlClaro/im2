@@ -20,19 +20,24 @@ def load_user(user_id):
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Moplex-storm123",
+    password="July82001Cl@ro",
     database="notes"
 )
 
 cursor = db.cursor()
 
-# Create a table if it doesn't exist
-cursor.execute("""
-    CREATE VIEW email_view AS
-    SELECT id, email, name
-    FROM emails
-""")
-db.commit()
+# Check if the view exists
+cursor.execute("SHOW TABLES LIKE 'email_view'")
+view_exists = cursor.fetchone()
+
+# Create the view if it doesn't exist
+if not view_exists:
+    cursor.execute("""
+        CREATE VIEW email_view AS
+        SELECT id, email, name
+        FROM emails
+    """)
+    db.commit()
 
 # Routes for CRUD operations
 @app.route('/')
