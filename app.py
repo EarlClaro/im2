@@ -20,8 +20,8 @@ def load_user(user_id):
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="1055",
-    database="notesdb1"
+    password="July82001Cl@ro",
+    database="notesdb"
 )
 
 cursor = db.cursor()
@@ -193,6 +193,8 @@ def delete_note(note_id):
     flash('Note deleted successfully!', 'success')
     return redirect(url_for('index'))
 
+from flask import request
+
 @app.route('/profile')
 @login_required
 def profile():
@@ -201,25 +203,59 @@ def profile():
     cursor.execute("SELECT username FROM users WHERE id = %s", (user_id,))
     user_data = cursor.fetchone()
 
-    # Render the profile template with user data
-    return render_template('profile.html', user_data=user_data)
+    # Fetch all user profiles
+    cursor.execute("SELECT * FROM userprofile WHERE user_id = %s", (user_id,))
+    user_profiles = cursor.fetchall()
 
+    # Render the profile template with user data and profiles
+    return render_template('profile.html', user_data=user_data, user_profiles=user_profiles)
+
+# Edit the 'edit_profile' route
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     if request.method == 'POST':
-        # Handle profile editing logic here (e.g., update user information in the database)
-        # ...
+        # Fetch user profile data
+        user_id = current_user.id
+        cursor.execute("SELECT * FROM userprofile WHERE user_id = %s", (user_id,))
+        existing_profile = cursor.fetchone()
+
+        # Get form data
+        new_first_name = request.form['first_name']
+        new_middle_name = request.form['middle_name']
+        new_last_name = request.form['last_name']
+        new_bio = request.form['bio']
+        new_birthdate = request.form['birthdate']
+        new_gender = request.form['gender']
+        new_location = request.form['location']
+
+        if existing_profile:
+            # Update user profile data in 'userprofile' table
+            cursor.execute("""
+                UPDATE userprofile 
+                SET first_name = %s, middle_name = %s, last_name = %s, bio = %s, birthdate = %s, gender = %s, location = %s
+                WHERE user_id = %s
+            """, (new_first_name, new_middle_name, new_last_name, new_bio, new_birthdate, new_gender, new_location, user_id))
+        else:
+            # Insert new user profile data into 'userprofile' table
+            cursor.execute("""
+                INSERT INTO userprofile (user_id, first_name, middle_name, last_name, bio, birthdate, gender, location)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """, (user_id, new_first_name, new_middle_name, new_last_name, new_bio, new_birthdate, new_gender, new_location))
+
+        db.commit()
 
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('profile'))
 
     # Fetch user profile data
     user_id = current_user.id
-    cursor.execute("SELECT username FROM users WHERE id = %s", (user_id,))
-    user_data = cursor.fetchone()
+    cursor.execute("SELECT * FROM userprofile WHERE user_id = %s", (user_id,))
+    user_profile = cursor.fetchone()
 
-    return render_template('edit_profile.html', user_data=user_data)
+    return render_template('edit_profile.html', user_profile=user_profile)
+
+
 
 
 if __name__ == '__main__':
