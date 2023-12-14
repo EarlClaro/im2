@@ -6,9 +6,26 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
     <title>Index</title>
+    <style>
+        body {
+            padding-top: 60px;
+        }
+
+        .container-notes {
+            text-align: center; /* Center the content */
+        }
+
+        #notes {
+            margin-top: 20px;
+        }
+
+        .list-group-item {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="#">Navbar</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -24,12 +41,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Logout</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/add_note">Add Notes</a>
+                </li>
             </ul>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <h1>Welcome, {{ current_user.name }}!</h1>
+        <h1>Welcome!</h1>
         <h2>Emails:</h2>
         <ul class="list-group">
             {% for email in email_data %}
@@ -38,6 +58,22 @@
                     <div class="btn-group" role="group" aria-label="Actions">
                         <a href="{{ url_for('edit_email', email_id=email[0]) }}" class="btn btn-primary btn-sm">Edit</a>
                         <a href="{{ url_for('delete_email', email_id=email[0]) }}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Display Notes -->
+    <div id="notes" class="mt-4 container-notes">
+        <h2>Notes:</h2>
+        <ul class="list-group">
+            {% for note in notes_data %}
+                <li class="list-group-item">
+                    {{ note[1] }}
+                    <div class="btn-group" role="group" aria-label="Actions">
+                        <a href="{{ url_for('edit_note', note_id=note[0]) }}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{{ url_for('delete_note', note_id=note[0]) }}" class="btn btn-danger btn-sm">Delete</a>
                     </div>
                 </li>
             {% endfor %}

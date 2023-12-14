@@ -21,7 +21,7 @@ db = mysql.connector.connect(
     host="localhost",
     user="root",
     password="July82001Cl@ro",
-    database="notes"
+    database="notesdb"
 )
 
 cursor = db.cursor()
@@ -87,9 +87,17 @@ def register():
 @app.route('/index')
 @login_required
 def index():
+    # Fetch email data
     cursor.execute("SELECT id, email, name FROM emails")
     email_data = cursor.fetchall()
-    return render_template('index.html', email_data=email_data)
+
+    # Fetch note data
+    user_id = current_user.id
+    cursor.execute("SELECT note_id, content FROM notes WHERE user_id = %s", (user_id,))
+    notes_data = cursor.fetchall()
+
+    # Render the template with both email and note data
+    return render_template('index.html', email_data=email_data, notes_data=notes_data)
 
 @app.route('/add_email', methods=['GET', 'POST'])
 @login_required
@@ -134,7 +142,56 @@ def delete_email(email_id):
     flash('Email deleted successfully!', 'success')
     return redirect(url_for('index'))
 
+@app.route('/notes')
+@login_required
+def notes():
+    user_id = current_user.id
+    cursor.execute("SELECT note_id, content FROM notes WHERE user_id = %s", (user_id,))
+    notes_data = cursor.fetchall()
+    return render_template('notes.html', notes_data=notes_data)
 
+@app.route('/add_note', methods=['GET', 'POST'])
+@login_required
+def add_note():
+    if request.method == 'POST':
+        content = request.form['note_content']  # Update to match the textarea name
+        user_id = current_user.id
+
+        cursor.execute("INSERT INTO notes (user_id, content) VALUES (%s, %s)", (user_id, content))
+        db.commit()
+
+        flash('Note added successfully!', 'success')
+        
+        # Redirect to the index route after adding a note
+        return redirect(url_for('index'))
+
+    return render_template('add_note.html')
+
+@app.route('/edit_note/<int:note_id>', methods=['GET', 'POST'])
+@login_required
+def edit_note(note_id):
+    if request.method == 'POST':
+        new_content = request.form['content']
+
+        cursor.execute("UPDATE notes SET content = %s WHERE note_id = %s", (new_content, note_id))
+        db.commit()
+
+        flash('Note updated successfully!', 'success')
+        return redirect(url_for('notes'))
+
+    cursor.execute("SELECT note_id, content FROM notes WHERE note_id = %s", (note_id,))
+    note_data = cursor.fetchone()
+
+    return render_template('edit_note.html', note_data=note_data)
+
+@app.route('/delete_note/<int:note_id>')
+@login_required
+def delete_note(note_id):
+    cursor.execute("DELETE FROM notes WHERE note_id = %s", (note_id,))
+    db.commit()
+
+    flash('Note deleted successfully!', 'success')
+    return redirect(url_for('notes'))
 
 if __name__ == '__main__':
     app.run(debug=True)
