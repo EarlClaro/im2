@@ -177,7 +177,7 @@ def edit_note(note_id):
         db.commit()
 
         flash('Note updated successfully!', 'success')
-        return redirect(url_for('notes'))
+        return redirect(url_for('index'))
 
     cursor.execute("SELECT note_id, content FROM notes WHERE note_id = %s", (note_id,))
     note_data = cursor.fetchone()
@@ -191,7 +191,7 @@ def delete_note(note_id):
     db.commit()
 
     flash('Note deleted successfully!', 'success')
-    return redirect(url_for('notes'))
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
