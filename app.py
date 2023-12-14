@@ -20,8 +20,8 @@ def load_user(user_id):
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="July82001Cl@ro",
-    database="notesdb"
+    password="1055",
+    database="notesdb1"
 )
 
 cursor = db.cursor()
@@ -192,6 +192,35 @@ def delete_note(note_id):
 
     flash('Note deleted successfully!', 'success')
     return redirect(url_for('index'))
+
+@app.route('/profile')
+@login_required
+def profile():
+    # Fetch user profile data
+    user_id = current_user.id
+    cursor.execute("SELECT username FROM users WHERE id = %s", (user_id,))
+    user_data = cursor.fetchone()
+
+    # Render the profile template with user data
+    return render_template('profile.html', user_data=user_data)
+
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    if request.method == 'POST':
+        # Handle profile editing logic here (e.g., update user information in the database)
+        # ...
+
+        flash('Profile updated successfully!', 'success')
+        return redirect(url_for('profile'))
+
+    # Fetch user profile data
+    user_id = current_user.id
+    cursor.execute("SELECT username FROM users WHERE id = %s", (user_id,))
+    user_data = cursor.fetchone()
+
+    return render_template('edit_profile.html', user_data=user_data)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
