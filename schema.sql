@@ -20,6 +20,14 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL
 );
 
+-- Create the 'notes' table
+CREATE TABLE IF NOT EXISTS notes (
+    note_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    content TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 -- Create a view named 'email_view'
 CREATE OR REPLACE VIEW email_view AS
 SELECT id, email, name
