@@ -9,10 +9,12 @@
     <style>
         body {
             padding-top: 60px;
+            background: linear-gradient(to bottom right, #800000, #FFD700);
+            color: #fff;
         }
 
         .container-notes {
-            text-align: center; /* Center the content */
+            text-align: center;
         }
 
         #notes {
@@ -21,6 +23,35 @@
 
         .list-group-item {
             margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .list-group-item a {
+            color: #fff;
+        }
+
+        .btn-primary,
+        .btn-danger {
+            color: #fff;
+        }
+
+        .btn-primary:hover,
+        .btn-danger:hover {
+            color: #000;
+        }
+
+        .navbar {
+            background-color: #800000;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #fff !important;
+        }
+
+        .navbar-brand:hover,
+        .nav-link:hover {
+            color: #000 !important;
         }
     </style>
 </head>
@@ -38,7 +69,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/add_note">Add Notes</a>
                 </li>
-           
                 <!-- New Profile Button -->
                 <li class="nav-item">
                     <a class="nav-link" href="/profile">
@@ -53,8 +83,8 @@
     </nav>
 
     <div class="container mt-4">
-        <h1>Welcome!</h1>
-        <h2>Emails:</h2>
+        <h1 style="font-weight: 100; text-align: center;">Welcome Users!</h1>
+        <h2 style="font-weight: 100;">List of Users:</h2>
         <ul class="list-group">
             {% for email in email_data %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -86,6 +116,4 @@
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-</body>
-</html>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4
