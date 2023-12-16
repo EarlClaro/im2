@@ -84,7 +84,10 @@
         .navbar-dark .navbar-nav .nav-link:hover {
             color: #ffffff;
         }
-
+        .names{
+            color: black;
+            font-style: oblique;
+        }
         @media (max-width: 768px) {
             body {
                 padding-top: 56px;
@@ -122,7 +125,8 @@
     <div class="container-profile">
         <i class="fa fa-user profile-icon"></i>
         <h1 class="usersa" style="text-align: center;">User Profile</h1>
-        <p>Username: {{ user_data[0] }}</p>
+        <div class="names"><p>{{ user_data[0] }}</p></div>
+        
         
         <div class="container">
             <h2= style="color:black;font-size:20px;font-weight: bolder;">Profile</h2>
