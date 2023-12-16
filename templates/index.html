@@ -20,7 +20,11 @@
         #notes {
             margin-top: 20px;
         }
-
+        .borders{
+            display: flex;
+            justify-content: center;
+           
+        }
         .list-group-item {
             margin-bottom: 10px;
             background-color: rgba(255, 255, 255, 0.1);
@@ -103,6 +107,7 @@
         <h2>Notes:</h2>
         <ul class="list-group">
             {% for note in notes_data %}
+            <div class="borders">
                 <li class="list-group-item">
                     {{ note[1] }}
                     <div class="btn-group" role="group" aria-label="Actions">
@@ -110,6 +115,7 @@
                         <a href="{{ url_for('delete_note', note_id=note[0]) }}" class="btn btn-danger btn-sm">Delete</a>
                     </div>
                 </li>
+            </div>
             {% endfor %}
         </ul>
     </div>
