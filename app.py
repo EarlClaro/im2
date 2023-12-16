@@ -20,7 +20,7 @@ def load_user(user_id):
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Marriane#1458",
+    password="July82001Cl@ro",
     database="notesdb"
 )
 

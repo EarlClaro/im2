@@ -123,8 +123,11 @@
         <p>Username: {{ user_data[0] }}</p>
         
         <div class="container">
+            <h2= style="color:black;font-size:20px;font-weight: bolder;">Profile</h2>
             <ul class="profile-details">
+                
                 {% for profile in user_profiles %}
+                
                     <li>
                         <strong>First Name:</strong>
                         <span>{{ profile[2] }}</span><br>
