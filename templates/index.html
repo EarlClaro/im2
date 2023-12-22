@@ -9,8 +9,8 @@
     <style>
         body {
             padding-top: 60px;
-            background: linear-gradient(to bottom right, #800000, #FFD700);
-            color: #fff;
+            background: #FAD247;
+            color: black;
         }
 
         .container-notes {
@@ -89,8 +89,8 @@
     </nav>
 
     <div class="container mt-4">
-        <h1 style="font-weight: 100; text-align: center;">Welcome!</h1>
-        <h2 style="font-weight: 100;">Emails Saved:</h2>
+        <h1 style="font-weight: bold; text-align: center; color:#E21B70">Welcome!</h1>
+        <h2 style="font-weight: 100; color:#E21B70">Emails Saved:</h2>
         <ul class="list-group">
             {% for email in email_data %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -106,7 +106,7 @@
 
     <!-- Display Notes -->
     <div id="notes" class="mt-4 container-notes">
-        <h2>Notes:</h2>
+        <h2 style="color:#E21B70">Notes:</h2>
         <ul class="list-group">
             {% for note in notes_data %}
             <div class="borders">
@@ -121,6 +121,7 @@
             {% endfor %}
         </ul>
     </div>
+    </body>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

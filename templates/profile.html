@@ -6,9 +6,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN+hK0z2L10P4Q7FqMl3UJq1aVC6LrT2" crossorigin="anonymous">
     <title>User Profile</title>
-    <style>  body {
+    <style>  
+    body {
         padding-top: 60px;
-        background: linear-gradient(to bottom, #800000, #FFD700);
+        background: #FAD247;
         background-size: cover;
         color: #fff;
         height: 100vh;
@@ -17,7 +18,7 @@
         body {
             padding-top: 60px;
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom right, #800000, #FFD700);
+            background: #FAD247;
         }
 
         .container-profile {
@@ -124,12 +125,12 @@
 
     <div class="container-profile">
         <i class="fa fa-user profile-icon"></i>
-        <h1 class="usersa" style="text-align: center;">User Profile</h1>
+        <h1 class="usersa" style="text-align: center; color:#E21B70">User Profile</h1>
         <div class="names"><p>{{ user_data[0] }}</p></div>
         
         
         <div class="container">
-            <h2= style="color:black;font-size:20px;font-weight: bolder;">Profile</h2>
+            
             <ul class="profile-details">
                 
                 {% for profile in user_profiles %}
@@ -154,7 +155,7 @@
             </ul>
         </div>
 
-        <a class="btn btn-primary btn-edit-profile" href="{{ url_for('edit_profile') }}">Edit Profile</a>
+        <a style="background-color: #E21B70; border-radius: 15px;" class="btn btn-primary btn-edit-profile" href="{{ url_for('edit_profile') }}">Edit Profile</a>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
