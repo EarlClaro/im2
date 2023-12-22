@@ -87,12 +87,14 @@ def register():
 @app.route('/index')
 @login_required
 def index():
-    # Fetch email data
-    cursor.execute("SELECT id, email, name FROM emails")
+    # Fetch email data for the current user
+    user_id = current_user.id
+
+    # Fetch only emails that belong to the current user
+    cursor.execute("SELECT id, email, name FROM emails WHERE user_id = %s", (user_id,))
     email_data = cursor.fetchall()
 
-    # Fetch note data
-    user_id = current_user.id
+    # Fetch note data for the current user
     cursor.execute("SELECT note_id, content FROM notes WHERE user_id = %s", (user_id,))
     notes_data = cursor.fetchall()
 
@@ -105,8 +107,9 @@ def add_email():
     if request.method == 'POST':
         email = request.form['email']
         name = request.form['name']
+        user_id = current_user.id  # Get the current user's id
 
-        cursor.execute("INSERT INTO emails (email, name) VALUES (%s, %s)", (email, name))
+        cursor.execute("INSERT INTO emails (user_id, email, name) VALUES (%s, %s, %s)", (user_id, email, name))
         db.commit()
 
         flash('Email added successfully!', 'success')
