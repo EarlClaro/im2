@@ -9,8 +9,11 @@ USE notes;
 -- Create the 'emails' table
 CREATE TABLE IF NOT EXISTS emails (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
     email VARCHAR(255) NOT NULL UNIQUE,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+    date_posted TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 -- Create the 'users' table
@@ -40,6 +43,7 @@ CREATE TABLE IF NOT EXISTS notes (
     note_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     content TEXT,
+    date_posted TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 

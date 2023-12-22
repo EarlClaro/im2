@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask import request
+from datetime import datetime
+
 import mysql.connector
 
 app = Flask(__name__)
@@ -21,7 +23,7 @@ db = mysql.connector.connect(
     host="localhost",
     user="root",
     password="July82001Cl@ro",
-    database="notesdb"
+    database="notesdb2"
 )
 
 cursor = db.cursor()
@@ -34,10 +36,12 @@ view_exists = cursor.fetchone()
 if not view_exists:
     cursor.execute("""
         CREATE VIEW email_view AS
-        SELECT id, email, name
-        FROM emails
+        SELECT e.id, e.email, e.name, e.date_posted, u.username
+        FROM emails e
+        JOIN users u ON e.user_id = u.id
     """)
     db.commit()
+
 
 # Routes for CRUD operations
 @app.route('/')
@@ -90,12 +94,12 @@ def index():
     # Fetch email data for the current user
     user_id = current_user.id
 
-    # Fetch only emails that belong to the current user
-    cursor.execute("SELECT id, email, name FROM emails WHERE user_id = %s", (user_id,))
+    # Fetch emails with date posted
+    cursor.execute("SELECT id, email, name, date_posted FROM emails WHERE user_id = %s", (user_id,))
     email_data = cursor.fetchall()
 
-    # Fetch note data for the current user
-    cursor.execute("SELECT note_id, content FROM notes WHERE user_id = %s", (user_id,))
+    # Fetch notes with date posted
+    cursor.execute("SELECT note_id, content, date_posted FROM notes WHERE user_id = %s", (user_id,))
     notes_data = cursor.fetchall()
 
     # Render the template with both email and note data
@@ -125,7 +129,14 @@ def edit_email(email_id):
         new_email = request.form['email']
         new_name = request.form['name']
 
-        cursor.execute("UPDATE emails SET email = %s, name = %s WHERE id = %s", (new_email, new_name, email_id))
+        # Update the date_posted field to the current date and time
+        current_date_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        cursor.execute("""
+            UPDATE emails 
+            SET email = %s, name = %s, date_posted = %s 
+            WHERE id = %s
+        """, (new_email, new_name, current_date_time, email_id))
         db.commit()
 
         flash('Email updated successfully!', 'success')
@@ -145,11 +156,12 @@ def delete_email(email_id):
     flash('Email deleted successfully!', 'success')
     return redirect(url_for('index'))
 
+# Update the 'notes' route
 @app.route('/notes')
 @login_required
 def notes():
     user_id = current_user.id
-    cursor.execute("SELECT note_id, content FROM notes WHERE user_id = %s", (user_id,))
+    cursor.execute("SELECT note_id, content, date_posted FROM notes WHERE user_id = %s", (user_id,))
     notes_data = cursor.fetchall()
     return render_template('notes.html', notes_data=notes_data)
 
@@ -176,7 +188,14 @@ def edit_note(note_id):
     if request.method == 'POST':
         new_content = request.form['content']
 
-        cursor.execute("UPDATE notes SET content = %s WHERE note_id = %s", (new_content, note_id))
+        # Update the date_posted field to the current date and time
+        current_date_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        cursor.execute("""
+            UPDATE notes 
+            SET content = %s, date_posted = %s 
+            WHERE note_id = %s
+        """, (new_content, current_date_time, note_id))
         db.commit()
 
         flash('Note updated successfully!', 'success')
